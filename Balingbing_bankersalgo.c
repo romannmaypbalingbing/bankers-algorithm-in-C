@@ -64,9 +64,6 @@ int main(){
     define_max_matrix(&num_resources, &num_processes, &total_resources, &max_matrix);
     compute_need_matrix(&num_resources, &num_processes, alloc_matrix, max_matrix, need_matrix);
     compute_avail_matrix(&num_resources, &num_processes, total_resources, alloc_matrix, avail_matrix, total_alloc);
-    
-    //system("cls");
-
     print_matrix(&num_resources, &num_processes, total_resources, alloc_matrix, max_matrix, need_matrix, avail_matrix);
     check_safe_state(&num_resources, &num_processes, alloc_matrix, max_matrix, need_matrix, &avail_matrix);
 
@@ -82,7 +79,7 @@ int main(){
 
 /** @brief This function asks for user input for the allocation matrix */
 void define_alloc_matrix(int* num_processes, int* num_resources, int** total_resources, int*** alloc_matrix){
-    printf("ALLOCATION MATRIX\n\n");
+    printf("\nALLOCATION MATRIX\n");
     printf("Enter the allocation matrix each process and resource: (e.g. \"1 2 3 4\")\n");
     for(int i = 0; i < *num_processes; i++){
         for(int j = 0; j < *num_resources; j++){
@@ -95,7 +92,7 @@ void define_alloc_matrix(int* num_processes, int* num_resources, int** total_res
 
 /** @brief This function asks for user input for the maximum matrix */
 void define_max_matrix(int* num_resources, int* num_processes, int** total_resources, int*** max_matrix){
-    printf("MAXIMUM MATRIX\n\n");
+    printf("\nMAXIMUM MATRIX\n");
     printf("Enter the maximum number of resources required for each process and resource: (e.g. \"1 2 3 4\")\n");
     for(int i = 0; i < *num_processes; i++){
         for(int j = 0; j < *num_resources; j++){
@@ -133,7 +130,7 @@ void compute_avail_matrix(int* num_resources, int* num_processes, int* total_res
 /** @brief This function prints the matrices */
 void print_matrix(int* num_resources, int* num_processes, int* total_resources, int** alloc_matrix, int** max_matrix, int** need_matrix, int* avail_matrix){
     // RESOURCES TABLE
-    printf("  RESOURCES\n");
+    printf("\n  RESOURCES\n");
     // Print row separator
     printf("  +");
     for (int j = 0; j < *num_resources; j++) {
