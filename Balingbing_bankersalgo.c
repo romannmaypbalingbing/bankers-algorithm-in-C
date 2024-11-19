@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+// Function prototypes
 void define_alloc_matrix(int* num_resources, int* num_processes, int** total_resources, int*** alloc_matrix);
 void define_max_matrix(int* num_resources, int* num_processes, int** total_resources, int*** max_matrix);
 void compute_need_matrix(int* num_resources, int* num_processes, int** alloc_matrix, int** max_matrix, int** need_matrix);
@@ -45,6 +45,7 @@ int main(){
     
     //define the total resources 
     for(int i = 0; i < num_processes; i++){
+        //allocate memory for each row of the matrices
         alloc_matrix[i] = (int *)malloc(num_resources * sizeof(int));
         max_matrix[i] = (int *)malloc(num_resources * sizeof(int));
         need_matrix[i] = (int *)malloc(num_resources * sizeof(int));
@@ -54,7 +55,7 @@ int main(){
             exit(1);
         }
 
-        if (i < num_resources) {  // Make sure you don't go beyond total_resources bounds
+        if (i < num_resources) { 
         printf("Enter the number of available resources for resource %c: ", 65+i);
         scanf(" %d", &total_resources[i]);
         }
@@ -64,14 +65,22 @@ int main(){
     compute_need_matrix(&num_resources, &num_processes, alloc_matrix, max_matrix, need_matrix);
     compute_avail_matrix(&num_resources, &num_processes, total_resources, alloc_matrix, avail_matrix, total_alloc);
     
-    system("cls");
+    //system("cls");
 
     print_matrix(&num_resources, &num_processes, total_resources, alloc_matrix, max_matrix, need_matrix, avail_matrix);
     check_safe_state(&num_resources, &num_processes, alloc_matrix, max_matrix, need_matrix, &avail_matrix);
+
+    free(alloc_matrix);
+    free(max_matrix);
+    free(need_matrix);
+    free(avail_matrix);
+    free(total_resources);
+    free(total_alloc);
+
     return 0;
 }
 
-
+/** @brief This function asks for user input for the allocation matrix */
 void define_alloc_matrix(int* num_processes, int* num_resources, int** total_resources, int*** alloc_matrix){
     printf("ALLOCATION MATRIX\n\n");
     printf("Enter the allocation matrix each process and resource: (e.g. \"1 2 3 4\")\n");
@@ -84,6 +93,7 @@ void define_alloc_matrix(int* num_processes, int* num_resources, int** total_res
     }
 }
 
+/** @brief This function asks for user input for the maximum matrix */
 void define_max_matrix(int* num_resources, int* num_processes, int** total_resources, int*** max_matrix){
     printf("MAXIMUM MATRIX\n\n");
     printf("Enter the maximum number of resources required for each process and resource: (e.g. \"1 2 3 4\")\n");
@@ -96,6 +106,7 @@ void define_max_matrix(int* num_resources, int* num_processes, int** total_resou
     }
 }
 
+/** @brief This function computes the need matrix */
 void compute_need_matrix(int* num_resources, int* num_processes, int** alloc_matrix, int** max_matrix, int** need_matrix){
     for(int i = 0; i < *num_processes; i++){
         for(int j = 0; j < *num_resources; j++){
@@ -104,6 +115,7 @@ void compute_need_matrix(int* num_resources, int* num_processes, int** alloc_mat
     }
 }
 
+/** @brief This function computes the available matrix */
 void compute_avail_matrix(int* num_resources, int* num_processes, int* total_resources, int** alloc_matrix, int* avail_matrix, int* total_alloc){
     
     for(int i = 0; i < *num_resources; i++){
@@ -118,6 +130,7 @@ void compute_avail_matrix(int* num_resources, int* num_processes, int* total_res
     }
 }
 
+/** @brief This function prints the matrices */
 void print_matrix(int* num_resources, int* num_processes, int* total_resources, int** alloc_matrix, int** max_matrix, int** need_matrix, int* avail_matrix){
     // RESOURCES TABLE
     printf("  RESOURCES\n");
@@ -313,6 +326,7 @@ void print_matrix(int* num_resources, int* num_processes, int* total_resources, 
 
 }
 
+/** @brief This function checks if the system is in a safe state */
 void check_safe_state(int* num_resources, int* num_processes, int** alloc_matrix, int** max_matrix, int** need_matrix, int** avail_matrix) {
     int* work = (int*)malloc(*num_resources * sizeof(int));
     int* finish = (int*)malloc(*num_processes * sizeof(int));
